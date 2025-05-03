@@ -5,7 +5,7 @@ import { MainCanvas } from './main-canvas';
 import { extractEffects } from './lib/extract-effects';
 import { useEffectfulReducer } from './lib/use-effectful-reducer';
 import { reduce } from './reduce';
-import { mkState } from './state';
+import { GameState, mkState } from './state';
 
 export type AppProps = {
   color: string,
@@ -15,7 +15,7 @@ export function App(props: AppProps): JSX.Element {
   const [state, dispatch] = useEffectfulReducer(mkState(), extractEffects(reduce), doEffect);
   const { counter } = state;
   return <>
-    <MainCanvas dispatch={dispatch} /><p />
+    <MainCanvas dispatch={dispatch} gameState={state.gameState} /><p />
   </>;
 }
 

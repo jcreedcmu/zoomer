@@ -2,38 +2,37 @@ import *  as React from 'react';
 import { CanvasInfo, useCanvas } from './lib/use-canvas';
 import { Dispatch } from './action';
 import { fillRect, relpos, rrelpos } from './lib/dutil';
+import { GameState } from './state';
+import { SE2, compose, inverse, mkSE2 } from './lib/se2';
+import { Rect } from './lib/types';
+import { insetRect } from './lib/util';
+import { vdiag } from './lib/vutil';
+import { apply_to_rect } from './lib/se2-extra';
 
 export type MainCanvasProps = {
   dispatch: Dispatch,
+  gameState: GameState,
 }
 
 export type MainCanvasState = {
-
-
+  gameState: GameState,
 }
 
 function render(ci: CanvasInfo, state: MainCanvasState): void {
   const { d, size } = ci;
   d.clearRect(0, 0, size.x, size.y);
+
+  const unit_canvas_from_canvas = mkSE2({ x: 1 / size.x, y: 1 / size.y }, { x: 0, y: 0 });
+  const { gameState: { game_from_unit_canvas } } = state;
+  const canvas_from_game = inverse(compose(game_from_unit_canvas, unit_canvas_from_canvas));
+
   const min = Math.min(size.x, size.y);
 
-  d.fillStyle = '#fed';
+  d.fillStyle = '#eee';
   d.fillRect(0, 0, size.x, size.y);
 
-  d.fillStyle = '#def';
-  d.beginPath();
-  d.arc(size.x / 2, size.y / 2, min / 2 - 10, 0, 2 * Math.PI);
-  d.fill();
-
-  d.fillStyle = '#449';
-  const text = 'x';
-  d.font = min * (1 / 10 + (130 / 200 / text.length)) + 'px serif';
-  d.textBaseline = 'alphabetic';
-  d.textAlign = 'center';
-
-  const metrics = d.measureText(text);
-
-  d.fillText(text, size.x / 2, size.y / 2 + (metrics.emHeightAscent) / 2);
+  const rect: Rect = apply_to_rect(canvas_from_game, insetRect({ p: vdiag(0), sz: vdiag(1) }, 0.4));
+  fillRect(d, rect, '#e53');
 }
 
 function onLoad(ci: CanvasInfo): void {
