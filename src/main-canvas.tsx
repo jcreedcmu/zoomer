@@ -75,5 +75,10 @@ export function MainCanvas(props: MainCanvasProps): JSX.Element {
   function onMouseDown(e: React.MouseEvent): void {
     dispatch({ t: 'mouseDown', p_in_unit_canvas: put_in_unit(rrelpos(e)) });
   }
-  return <canvas className="center" onMouseDown={onMouseDown} ref={cref} />;
+
+  function onWheel(e: React.WheelEvent): void {
+    dispatch({ t: 'mouseWheel', p_in_unit_canvas: put_in_unit(rrelpos(e)), delta: e.deltaY });
+  }
+
+  return <canvas className="center" onMouseDown={onMouseDown} onWheel={onWheel} ref={cref} />;
 }
