@@ -14,7 +14,10 @@ export type MouseState =
   | { t: 'up', p_in_unit_canvas: Point }
   ;
 
+export type Stage = 'red-square' | 'gray-square';
+
 export type GameState = {
+  stage: Stage
   mouseState: MouseState,
   game_from_unit_canvas: SE2, // maps the unit square [0,1] x [0,1] to game world coordinates
 }
@@ -24,6 +27,7 @@ export function mkState(): AppState {
     counter: 0, effects: [], debugStr: '',
     gameState:
     {
+      stage: 'red-square',
       mouseState: { t: 'up', p_in_unit_canvas: { x: 0, y: 0 } },
       game_from_unit_canvas: mkSE2({ x: 1, y: 1 }, { x: 0, y: 0 }),
     }

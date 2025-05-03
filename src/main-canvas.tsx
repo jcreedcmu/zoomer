@@ -26,13 +26,24 @@ function render(ci: CanvasInfo, state: MainCanvasState): void {
   const { gameState: { game_from_unit_canvas } } = state;
   const canvas_from_game = inverse(compose(game_from_unit_canvas, unit_canvas_from_canvas));
 
-  const min = Math.min(size.x, size.y);
+  switch (state.gameState.stage) {
+    case 'red-square': {
+      d.fillStyle = '#eee';
+      d.fillRect(0, 0, size.x, size.y);
 
-  d.fillStyle = '#eee';
-  d.fillRect(0, 0, size.x, size.y);
+      const rect: Rect = apply_to_rect(canvas_from_game, insetRect({ p: vdiag(0), sz: vdiag(1) }, 0.4));
+      fillRect(d, rect, '#e53');
+      break;
+    }
+    case 'gray-square': {
+      d.fillStyle = '#e53';
+      d.fillRect(0, 0, size.x, size.y);
 
-  const rect: Rect = apply_to_rect(canvas_from_game, insetRect({ p: vdiag(0), sz: vdiag(1) }, 0.4));
-  fillRect(d, rect, '#e53');
+      const rect: Rect = apply_to_rect(canvas_from_game, insetRect({ p: vdiag(0), sz: vdiag(1) }, 0.4));
+      fillRect(d, rect, '#eee');
+      break;
+    }
+  }
 }
 
 function onLoad(ci: CanvasInfo): void {
