@@ -6,6 +6,7 @@ import { extractEffects } from './lib/extract-effects';
 import { useEffectfulReducer } from './lib/use-effectful-reducer';
 import { reduce } from './reduce';
 import { GameState, mkState } from './state';
+import { relpos } from './lib/dutil';
 
 export type AppProps = {
   color: string,
@@ -14,6 +15,18 @@ export type AppProps = {
 export function App(props: AppProps): JSX.Element {
   const [state, dispatch] = useEffectfulReducer(mkState(), extractEffects(reduce), doEffect);
   const { counter } = state;
+
+  /* function onMouseMove(ev: MouseEvent): any {
+
+   * }
+
+   * React.useEffect(() => {
+   *   document.addEventListener('mousemove', onMouseMove);
+   *   return () => {
+   *     document.removeEventListener('mousemove', onMouseMove);
+   *   }
+   * });
+   */
   return <>
     <MainCanvas dispatch={dispatch} gameState={state.gameState} /><p />
   </>;

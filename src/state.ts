@@ -1,5 +1,6 @@
 import { Effect } from "./effect";
 import { SE2, mkSE2 } from "./lib/se2";
+import { Point } from "./lib/types";
 
 export type AppState = {
   counter: number,
@@ -7,6 +8,11 @@ export type AppState = {
   debugStr: string,
   gameState: GameState,
 }
+
+export type MouseState =
+  | { t: 'pan', p_in_canvas: Point }
+  | { t: 'up', p_in_canvas: Point }
+  ;
 
 export type GameState = {
   game_from_unit_canvas: SE2, // maps the unit square [0,1] x [0,1] to game world coordinates

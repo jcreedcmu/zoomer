@@ -5,20 +5,16 @@ import { Action } from './action';
 export function reduce(state: AppState, action: Action): AppState {
   switch (action.t) {
     case 'increment': {
-      return produce(state, s => {
-        s.counter++;
-      });
+      state;
     }
     case 'side-effect': {
-      return produce(state, s => {
-        s.effects.push({ t: 'alert' });
-      });
+      return state;
     }
     case 'mouseDown': {
-      const { x, y } = action.p_in_canvas;
-      return produce(state, s => {
-        s.debugStr = `clicked at (${x}, ${y})`;
-      });
+      const { x, y } = action.p_in_unit_canvas;
+      return state;
     }
+    case 'mouseMove': { console.log('mousemove', action.p_in_unit_canvas); return state; }
+    case 'mouseUp': { console.log('mouseup', action.p_in_unit_canvas); return state; }
   }
 }
